@@ -11,7 +11,6 @@ from asgiref.sync import sync_to_async
 
 
 class TrackingNumberView(APIView):
-
     def validate_parameters(self, request):
         # Validate the origin and destination country codes (ISO 3166-1 alpha-2)
         alpha2_validator = RegexValidator(regex=r'^[A-Z]{2}$', message="Invalid country code format")
@@ -51,16 +50,15 @@ class TrackingNumberView(APIView):
 
         return origin_country_id, destination_country_id, weight, created_at, customer_id, customer_name, customer_slug
 
-    async def get(self, request):
+    def get(self, request):
         # Validate and extract parameters
         try:
-            origin_country_id, destination_country_id, weight, created_at, customer_id, customer_name, customer_slug = self.validate_parameters(
-                request)
+            origin_country_id, destination_country_id, weight, created_at, customer_id, customer_name, customer_slug = self.validate_parameters(request)
         except ValueError as e:
             return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
 
-        # Generate unique tracking number
-        tracking_number = await self.get_unique_tracking_number()
+        # Generate unique tracking number (use sync_to_async)
+        tracking_number = sync_to_async(self.get_unique_tracking_number)()
 
         # Prepare response
         response_data = {
