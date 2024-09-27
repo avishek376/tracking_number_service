@@ -59,6 +59,65 @@ To start the development server, run:
     python manage.py runserver
 
 
+In views.py file we created class based view by inheriting APIView
+the class based view is seggregated in 3 function 
+ 
+    1st
+
+    def validate_parameters(self, request):
+
+        alpha2_validator = RegexValidator(regex=r'^[A-Z]{2}$', message="Invalid country code format")
+
+        # Fetch country codes
+        ...
+        # Validate country codes
+        ...
+        # Validate weight
+        ...
+        # Validate created_at
+        ...
+        # Validate customer_id
+        
+is for validating the passed data at runtime
+
+    2nd
+
+    def get(self, request):
+
+        Code for validating data
+        ...
+        response_data = {
+            'tracking_number': tracking_number,
+            'created_at': datetime.datetime.now(pytz.UTC).isoformat(),
+            'origin_country_id': origin_country_id,
+            'destination_country_id': destination_country_id,
+            'weight': weight,
+            'customer_id': customer_id,
+            'customer_name': customer_name,
+            'customer_slug': customer_slug,
+        }
+
+        return Response(response_data, status=status.HTTP_200_OK)
+
+for providing the real Json response after checking the data.
+
+    3rd
+
+    def get_unique_tracking_number(self):
+        while True:
+            # getting tracking-number
+            tracking_number = generate_tracking_number()
+
+
+            if not TrackingNumber.objects.filter(tracking_number=tracking_number).exists():
+                # Save the new tracking number to the database
+                TrackingNumber.objects.create(tracking_number=tracking_number)
+                return tracking_number
+
+the above function is to check uniqueness of the tracking_id
+that it's previously got generated or not
+
+
 API Documentation::
 
 
