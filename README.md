@@ -98,7 +98,12 @@ Use of NGINX and AWS Elastic Beanstalk for Scalability and Concurrency
 
      NGINX: Acts as a reverse proxy server, handling client requests and distributing them to multiple instances of the Django application. This setup improves response times and allows for load balancing, ensuring efficient handling of concurrent requests.
      AWS Elastic Beanstalk: Simplifies deployment and scaling of applications. It automatically manages the infrastructure, including load balancing, auto-scaling, and monitoring. This allows the application to scale seamlessly based on traffic, ensuring high availability and performance under varying loads.
+     By that created get the root URL from AWS 
 
+     http://venv-ebdjango.eba-f9fhahut.ap-south-1.elasticbeanstalk.com
+
+     For accessing the request hit the below URL:
+     http://venv-ebdjango.eba-f9fhahut.ap-south-1.elasticbeanstalk.com/next-tracking-number/
 **NOTE**::
 
 We can improve the service by providing gunicorn,celery and async also
