@@ -1,22 +1,16 @@
-from django.http import JsonResponse
-from django.shortcuts import render
-from rest_framework import views
-from rest_framework.decorators import api_view, permission_classes
+from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from .models import TrackingNumber
 from .utils import generate_tracking_number
-from asgiref.sync import sync_to_async
 import datetime
 from django.core.validators import RegexValidator
 from uuid import UUID
 import pytz
-
-# Create your views here.
-
+from asgiref.sync import sync_to_async
 
 
-class TrackingNumberView(views.APIView):
+class TrackingNumberView(APIView):
 
     def validate_parameters(self, request):
         # Validate the origin and destination country codes (ISO 3166-1 alpha-2)
@@ -82,13 +76,14 @@ class TrackingNumberView(views.APIView):
 
         return Response(response_data, status=status.HTTP_200_OK)
 
-    async def get_unique_tracking_number(self):
+    @sync_to_async
+    def get_unique_tracking_number(self):
         while True:
-            # Generate tracking number using async function
+            # Generate tracking number
             tracking_number = generate_tracking_number()
 
             # Check if the tracking number already exists (use async ORM query)
-            if not await sync_to_async(TrackingNumber.objects.filter(tracking_number=tracking_number).exists)():
+            if not TrackingNumber.objects.filter(tracking_number=tracking_number).exists():
                 # If it does not exist, save the new tracking number to the database
-                await sync_to_async(TrackingNumber.objects.create)(tracking_number=tracking_number)
+                TrackingNumber.objects.create(tracking_number=tracking_number)
                 return tracking_number
