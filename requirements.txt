@@ -3,5 +3,7 @@ Django==4.2.7
 djangorestframework==3.14.0
 gunicorn==23.0.0
 uvicorn==0.30.6
+PyMySQL==1.1.0
+mysqlclient==2.2.4
 
 
