@@ -31,12 +31,12 @@ class TrackingNumberView(APIView):
         #         "Both origin_country_id and destination_country_id must be exactly two characters in ISO 3166-1 alpha-2 format.")
 
         # Validate the cleaned country codes
-        try:
-            alpha2_validator(origin_country_id)
-            alpha2_validator(destination_country_id)
-        except Exception:
-            raise ValueError(
-                "Invalid country code format. Both codes must be in ISO 3166-1 alpha-2 format (e.g., 'US', 'ID').")
+        # try:
+        #     alpha2_validator(origin_country_id)
+        #     alpha2_validator(destination_country_id)
+        # except Exception:
+        #     raise ValueError(
+        #         "Invalid country code format. Both codes must be in ISO 3166-1 alpha-2 format (e.g., 'US', 'ID').")
 
         # Validate weight to be a float with 3 decimal places
         weight = request.query_params.get('weight')
