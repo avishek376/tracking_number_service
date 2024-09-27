@@ -14,8 +14,14 @@ class TrackingNumberView(APIView):
     def validate_parameters(self, request):
         # Validate the origin and destination country codes (ISO 3166-1 alpha-2)
         alpha2_validator = RegexValidator(regex=r'^[A-Z]{2}$', message="Invalid country code format")
-        origin_country_id = request.query_params.get('origin_country_id')
-        destination_country_id = request.query_params.get('destination_country_id')
+
+        # Fetch and clean country codes
+        origin_country_id = request.query_params.get('origin_country_id',
+                                                     '').strip().upper()  # Convert to uppercase and strip
+        destination_country_id = request.query_params.get('destination_country_id',
+                                                          '').strip().upper()  # Convert to uppercase and strip
+
+        # Validate the cleaned country codes
         alpha2_validator(origin_country_id)
         alpha2_validator(destination_country_id)
 
@@ -53,7 +59,8 @@ class TrackingNumberView(APIView):
     def get(self, request):
         # Validate and extract parameters
         try:
-            origin_country_id, destination_country_id, weight, created_at, customer_id, customer_name, customer_slug = self.validate_parameters(request)
+            origin_country_id, destination_country_id, weight, created_at, customer_id, customer_name, customer_slug = self.validate_parameters(
+                request)
         except ValueError as e:
             return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
 
