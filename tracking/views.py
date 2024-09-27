@@ -84,8 +84,8 @@ class TrackingNumberView(APIView):
 
         return Response(response_data, status=status.HTTP_200_OK)
 
-    @sync_to_async
-    def get_unique_tracking_number(self):
+    # @sync_to_async
+    async def get_unique_tracking_number(self):
         while True:
             # Generate tracking number
             tracking_number = generate_tracking_number()
