@@ -11,17 +11,18 @@ from asgiref.sync import sync_to_async
 
 
 class TrackingNumberView(APIView):
+
     def validate_parameters(self, request):
         # Validate the origin and destination country codes (ISO 3166-1 alpha-2)
         alpha2_validator = RegexValidator(regex=r'^[A-Z]{2}$', message="Invalid country code format")
 
         # Fetch and clean country codes
-        origin_country_id = request.query_params.get('origin_country_id', '').strip().upper()
-        destination_country_id = request.query_params.get('destination_country_id', '').strip().upper()
+        origin_country_id = request.query_params.get('origin_country_id', '').strip().upper()  # Convert to uppercase and strip
+        destination_country_id = request.query_params.get('destination_country_id', '').strip().upper()  # Convert to uppercase and strip
 
-        # Check if country codes are present and exactly 2 characters long
+        # Explicitly check if the country codes are exactly 2 characters long
         if len(origin_country_id) != 2 or len(destination_country_id) != 2:
-            raise ValueError("Both origin_country_id and destination_country_id must be two characters in ISO 3166-1 alpha-2 format")
+            raise ValueError("Both origin_country_id and destination_country_id must be exactly two characters in ISO 3166-1 alpha-2 format.")
 
         # Validate the cleaned country codes
         alpha2_validator(origin_country_id)
