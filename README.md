@@ -104,7 +104,12 @@ Use of NGINX and AWS Elastic Beanstalk for Scalability and Concurrency
 
      For accessing the request hit the below URL:
      http://venv-ebdjango.eba-f9fhahut.ap-south-1.elasticbeanstalk.com/next-tracking-number/
+
+
 **NOTE**::
+I am using AWS free tier and some of the servies doesn't work seamlessly all the time.
+You might get a Django error on prod site.
+
 
 We can improve the service by providing gunicorn,celery and async also
 ...tried also on EC2 instance but got error, due to the time constraint 
