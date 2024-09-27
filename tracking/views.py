@@ -11,52 +11,59 @@ from asgiref.sync import sync_to_async
 
 
 class TrackingNumberView(APIView):
-
     def validate_parameters(self, request):
         # Validate the origin and destination country codes (ISO 3166-1 alpha-2)
         alpha2_validator = RegexValidator(regex=r'^[A-Z]{2}$', message="Invalid country code format")
 
         # Fetch and clean country codes
-        origin_country_id = request.query_params.get('origin_country_id', '').strip().upper()  # Convert to uppercase and strip
-        destination_country_id = request.query_params.get('destination_country_id', '').strip().upper()  # Convert to uppercase and strip
+        origin_country_id = request.query_params.get('origin_country_id',
+                                                     '').strip().upper()  # Convert to uppercase and strip
+        destination_country_id = request.query_params.get('destination_country_id',
+                                                          '').strip().upper()  # Convert to uppercase and strip
 
-        # Explicitly check if the country codes are exactly 2 characters long
-        if origin_country_id or destination_country_id:
+        # Ensure country codes are provided
+        if not origin_country_id or not destination_country_id:
+            raise ValueError("Both origin_country_id and destination_country_id are required.")
 
-            if len(origin_country_id) != 2 or len(destination_country_id) != 2:
-                raise ValueError("Both origin_country_id and destination_country_id must be exactly two characters in "
-                                 "ISO 3166-1 alpha-2 format.")
+        # Ensure they are exactly 2 characters in length
+        if len(origin_country_id) != 2 or len(destination_country_id) != 2:
+            raise ValueError(
+                "Both origin_country_id and destination_country_id must be exactly two characters in ISO 3166-1 alpha-2 format.")
 
         # Validate the cleaned country codes
-        alpha2_validator(origin_country_id)
-        alpha2_validator(destination_country_id)
+        try:
+            alpha2_validator(origin_country_id)
+            alpha2_validator(destination_country_id)
+        except Exception:
+            raise ValueError(
+                "Invalid country code format. Both codes must be in ISO 3166-1 alpha-2 format (e.g., 'US', 'ID').")
 
         # Validate weight to be a float with 3 decimal places
         weight = request.query_params.get('weight')
         try:
             weight = float(weight)
         except ValueError:
-            raise ValueError("Weight should be a valid float number")
+            raise ValueError("Weight should be a valid float number.")
 
         # Validate created_at is in RFC 3339 format
         created_at = request.query_params.get('created_at')
         try:
             created_at = datetime.datetime.strptime(created_at, '%Y-%m-%dT%H:%M:%S%z')
         except ValueError:
-            raise ValueError("created_at should be in RFC 3339 format")
+            raise ValueError("created_at should be in RFC 3339 format.")
 
         # Validate customer_id to be a valid UUID
         customer_id = request.query_params.get('customer_id')
         try:
             UUID(customer_id, version=4)
         except ValueError:
-            raise ValueError("customer_id should be a valid UUID")
+            raise ValueError("customer_id should be a valid UUID.")
 
         # Validate customer_name
         customer_name = request.query_params.get('customer_name')
 
         # Validate customer_slug to be a valid slug
-        slug_validator = RegexValidator(regex=r'^[a-z0-9]+(?:-[a-z0-9]+)*$', message="Invalid slug format")
+        slug_validator = RegexValidator(regex=r'^[a-z0-9]+(?:-[a-z0-9]+)*$', message="Invalid slug format.")
         customer_slug = request.query_params.get('customer_slug')
         slug_validator(customer_slug)
 
@@ -65,7 +72,8 @@ class TrackingNumberView(APIView):
     def get(self, request):
         # Validate and extract parameters
         try:
-            origin_country_id, destination_country_id, weight, created_at, customer_id, customer_name, customer_slug = self.validate_parameters(request)
+            origin_country_id, destination_country_id, weight, created_at, customer_id, customer_name, customer_slug = self.validate_parameters(
+                request)
         except ValueError as e:
             return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
 
