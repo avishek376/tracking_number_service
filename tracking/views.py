@@ -1,3 +1,4 @@
+from django.http import JsonResponse
 from django.shortcuts import render
 from rest_framework import views
 from rest_framework.decorators import api_view, permission_classes
@@ -116,7 +117,7 @@ class TrackingNumberView(views.APIView):
             'customer_slug': customer_slug,
         }
 
-        return Response(response_data, status=status.HTTP_200_OK)
+        return JsonResponse(response_data, status=status.HTTP_200_OK)
 
     async def get_unique_tracking_number(self):
         while True:
