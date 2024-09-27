@@ -7,8 +7,6 @@ import datetime
 from django.core.validators import RegexValidator
 from uuid import UUID
 import pytz
-from asgiref.sync import sync_to_async
-
 
 class TrackingNumberView(APIView):
     def validate_parameters(self, request):
@@ -68,7 +66,7 @@ class TrackingNumberView(APIView):
             return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
 
         # Generate unique tracking number
-        tracking_number = sync_to_async(self.get_unique_tracking_number)()
+        tracking_number = self.get_unique_tracking_number()
 
         # Prepare response
         response_data = {
@@ -84,8 +82,7 @@ class TrackingNumberView(APIView):
 
         return Response(response_data, status=status.HTTP_200_OK)
 
-    # @sync_to_async
-    async def get_unique_tracking_number(self):
+    def get_unique_tracking_number(self):
         while True:
             # Generate tracking number
             tracking_number = generate_tracking_number()
