@@ -6,7 +6,7 @@ from rest_framework.response import Response
 from rest_framework import status
 from .models import TrackingNumber
 from .utils import generate_tracking_number
-import datetime
+from asgiref.sync import sync_to_async
 import datetime
 from django.core.validators import RegexValidator
 from uuid import UUID
@@ -122,6 +122,9 @@ class TrackingNumberView(views.APIView):
     async def get_unique_tracking_number(self):
         while True:
             tracking_number = generate_tracking_number()
-            if not await TrackingNumber.objects.filter(tracking_number=tracking_number).exists():
-                await TrackingNumber.objects.create(tracking_number=tracking_number)
+            # Use sync_to_async for ORM operations
+            exists = await sync_to_async(TrackingNumber.objects.filter(tracking_number=tracking_number).exists)()
+            if not exists:
+                # Use sync_to_async for creating an object as well
+                await sync_to_async(TrackingNumber.objects.create)(tracking_number=tracking_number)
                 return tracking_number
