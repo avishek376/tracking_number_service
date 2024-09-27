@@ -21,8 +21,11 @@ class TrackingNumberView(APIView):
         destination_country_id = request.query_params.get('destination_country_id', '').strip().upper()  # Convert to uppercase and strip
 
         # Explicitly check if the country codes are exactly 2 characters long
-        if len(origin_country_id) != 2 or len(destination_country_id) != 2:
-            raise ValueError("Both origin_country_id and destination_country_id must be exactly two characters in ISO 3166-1 alpha-2 format.")
+        if origin_country_id or destination_country_id:
+
+            if len(origin_country_id) != 2 or len(destination_country_id) != 2:
+                raise ValueError("Both origin_country_id and destination_country_id must be exactly two characters in "
+                                 "ISO 3166-1 alpha-2 format.")
 
         # Validate the cleaned country codes
         alpha2_validator(origin_country_id)
