@@ -1,1 +1,1 @@
-web: uvicorn tracking_number_service.asgi:application
+web: uvicorn tracking_number_service.asgi:application --host 0.0.0.0 --port $PORT
