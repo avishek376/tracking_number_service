@@ -75,6 +75,7 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'tracking_number_service.wsgi.application'
+ASGI_APPLICATION = 'tracking_number_service.asgi.application'
 
 
 # Database
