@@ -11,6 +11,8 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 import os
 from pathlib import Path
+import pymysql
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -25,7 +27,7 @@ SECRET_KEY = 'django-insecure-+5(v)g0cq)4et5%v16)9ah%b!#v&l($83ro4*obx$rl93irz#5
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["*","localhost","trackingapp-b8abe49b9e57.herokuapp.com"]
+ALLOWED_HOSTS = ["*","localhost","venv-ebdjango.eba-f9fhahut.ap-south-1.elasticbeanstalk.com"]
 
 
 # Application definition
@@ -89,16 +91,15 @@ ASGI_APPLICATION = 'tracking_number_service.asgi.application'
 # }
 
 DATABASES = {
-   'default': {
-       'ENGINE': 'django.db.backends.postgresql',
-       # 'NAME': ‘<database_name>’,
-       # 'USER': '<database_username>',
-       # 'PASSWORD': '<password>',
-       # 'HOST': '<database_hostname_or_ip>',
-       # 'PORT': '<database_port>',
-   }
+    'default': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': os.getenv('ebdb'),
+        'USER': os.getenv('admin'),
+        'PASSWORD': os.getenv('admin123'),
+        'HOST': os.getenv('awseb-e-r9gqeirw7d-stack-awsebrdsdatabase-uksgghcj1s4n.czigwesyal6y.ap-south-1.rds.amazonaws.com'),
+        'PORT': os.getenv('3306'),
+    }
 }
-
 
 
 # Password validation
