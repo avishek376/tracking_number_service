@@ -1,0 +1,1 @@
+web: gunicorn tracking_number_service.wsgi
