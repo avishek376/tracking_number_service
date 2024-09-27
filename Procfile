@@ -1,1 +1,1 @@
-web: gunicorn tracking_number_service.wsgi
+web: uvicorn tracking_number_service.asgi
