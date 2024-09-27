@@ -11,17 +11,8 @@ import datetime
 from django.core.validators import RegexValidator
 from uuid import UUID
 import pytz
-#
-# # Create your views here.
-#
-#
-# def generate_unique_tracking_number():
-#     while True:
-#         tracking_number = generate_tracking_number()
-#         if not TrackingNumber.objects.filter(tracking_number=tracking_number).exists():
-#             TrackingNumber.objects.create(tracking_number=tracking_number)
-#             return tracking_number
-#
+
+# Create your views here.
 
 
 
