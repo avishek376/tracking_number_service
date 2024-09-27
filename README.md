@@ -2,7 +2,7 @@
 
 Tech Stack
 Django REST Framework for building the API.
-PostgreSQL as the database for tracking storage.
+MySQL as the database for tracking storage.
 UUID and Regex validators for strict input validation.
 pytz for timezone management.
     
@@ -16,7 +16,8 @@ Setup Instructions
     cd tracking_number_generator
 
    2. Environment Setup
-   Ensure Python 3.9+ is installed. Then set up a virtual environment:
+   Ensure Python 3.9+ is installed. 
+   Then set up a virtual environment:
     
     
     python -m venv venv
