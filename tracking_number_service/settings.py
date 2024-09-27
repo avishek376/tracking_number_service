@@ -81,12 +81,24 @@ ASGI_APPLICATION = 'tracking_number_service.asgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': BASE_DIR / 'db.sqlite3',
+#     }
+# }
+
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
+   'default': {
+       'ENGINE': 'django.db.backends.postgresql',
+       'NAME': ‘<database_name>’,
+       'USER': '<database_username>',
+       'PASSWORD': '<password>',
+       'HOST': '<database_hostname_or_ip>',
+       'PORT': '<database_port>',
+   }
 }
+
 
 
 # Password validation
