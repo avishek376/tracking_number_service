@@ -21,14 +21,14 @@ class TrackingNumberView(APIView):
         destination_country_id = request.query_params.get('destination_country_id',
                                                           '').strip().upper()  # Convert to uppercase and strip
 
-        # Ensure country codes are provided
-        if not origin_country_id or not destination_country_id:
-            raise ValueError("Both origin_country_id and destination_country_id are required.")
-
-        # Ensure they are exactly 2 characters in length
-        if len(origin_country_id) != 2 or len(destination_country_id) != 2:
-            raise ValueError(
-                "Both origin_country_id and destination_country_id must be exactly two characters in ISO 3166-1 alpha-2 format.")
+        # # Ensure country codes are provided
+        # if not origin_country_id or not destination_country_id:
+        #     raise ValueError("Both origin_country_id and destination_country_id are required.")
+        #
+        # # Ensure they are exactly 2 characters in length
+        # if len(origin_country_id) != 2 or len(destination_country_id) != 2:
+        #     raise ValueError(
+        #         "Both origin_country_id and destination_country_id must be exactly two characters in ISO 3166-1 alpha-2 format.")
 
         # Validate the cleaned country codes
         try:
